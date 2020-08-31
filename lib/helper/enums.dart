@@ -1,0 +1,1 @@
+enum noteTypes { TEXT, CHECK }
