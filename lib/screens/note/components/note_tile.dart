@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 class NoteTile extends StatelessWidget {
   final NoteStore note;
 
-  NoteTile(this.note) {
-    print(note);
-  }
+  NoteTile(this.note);
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +27,13 @@ class NoteTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 note.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -40,7 +41,9 @@ class NoteTile extends StatelessWidget {
                 ),
               ),
               Text(
-                note.textContent, //?? note.checkContent ?? "",
+                note.textContent,
+                maxLines: 8,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 14,

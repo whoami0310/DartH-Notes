@@ -24,8 +24,34 @@ mixin _$NotesStore on _NotesStoreBase, Store {
     });
   }
 
+  final _$viewInListAtom = Atom(name: '_NotesStoreBase.viewInList');
+
+  @override
+  bool get viewInList {
+    _$viewInListAtom.reportRead();
+    return super.viewInList;
+  }
+
+  @override
+  set viewInList(bool value) {
+    _$viewInListAtom.reportWrite(value, super.viewInList, () {
+      super.viewInList = value;
+    });
+  }
+
   final _$_NotesStoreBaseActionController =
       ActionController(name: '_NotesStoreBase');
+
+  @override
+  dynamic toggleView() {
+    final _$actionInfo = _$_NotesStoreBaseActionController.startAction(
+        name: '_NotesStoreBase.toggleView');
+    try {
+      return super.toggleView();
+    } finally {
+      _$_NotesStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic search(String text) {
@@ -41,7 +67,7 @@ mixin _$NotesStore on _NotesStoreBase, Store {
   @override
   String toString() {
     return '''
-
+viewInList: ${viewInList}
     ''';
   }
 }

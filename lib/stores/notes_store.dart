@@ -16,6 +16,12 @@ abstract class _NotesStoreBase with Store {
   @observable
   String _search = "";
 
+  @observable
+  bool viewInList = true;
+
+  @action
+  toggleView() => viewInList = !viewInList;
+
   @action
   search(String text) => _search = text;
 

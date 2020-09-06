@@ -4,6 +4,7 @@ import 'package:darthnotes/screens/note/note_screen.dart';
 import 'package:darthnotes/stores/notes_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,16 +20,29 @@ class HomeScreen extends StatelessWidget {
       body: Observer(
         builder: (context) {
           var lista = notesStore.allNotesFiltered;
-          return ListView.separated(
-            separatorBuilder: (context, index) {
-              return Divider(height: 10);
-            },
-            padding: EdgeInsets.all(16),
-            itemCount: lista.length,
-            itemBuilder: (_, index) {
-              return NoteTile(lista[index]);
-            },
-          );
+
+          return notesStore.viewInList
+              ? ListView.separated(
+                  separatorBuilder: (context, index) {
+                    return Divider(height: 10);
+                  },
+                  padding: EdgeInsets.all(16),
+                  itemCount: lista.length,
+                  itemBuilder: (_, index) {
+                    return NoteTile(lista[index]);
+                  },
+                )
+              : GridView.builder(
+                  padding: EdgeInsets.all(16),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                  ),
+                  itemCount: lista.length,
+                  itemBuilder: (context, index) {
+                    return NoteTile(lista[index]);
+                  });
         },
       ),
       floatingActionButton: FloatingActionButton(

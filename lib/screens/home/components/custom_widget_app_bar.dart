@@ -3,6 +3,7 @@ import 'package:darthnotes/helper/colors.dart';
 import 'package:darthnotes/stores/notes_store.dart';
 import 'package:darthnotes/common/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 class CustomWidgetAppBar extends StatelessWidget {
@@ -35,18 +36,27 @@ class CustomWidgetAppBar extends StatelessWidget {
                     hintText: "Pesquisar suas notas",
                     onChanged: notesStore.search),
               ),
-              CustomIconButton(
-                iconData: Icons.list,
-                onTap: notesStore.loadAllNotes,
+              Observer(
+                builder: (c) {
+                  return CustomIconButton(
+                    radius: 7,
+                    iconData:
+                        notesStore.viewInList ? Icons.list : Icons.grid_on,
+                    onTap: notesStore.toggleView,
+                  );
+                },
               ),
               SizedBox(width: 12),
-              CircleAvatar(
-                radius: 12,
-                backgroundColor: Colors.white,
-                //backgroundImage: AssetImage("images/user.png"),
-                child: Padding(
-                  padding: EdgeInsets.all(4),
-                  child: Image.asset("images/user.png"),
+              GestureDetector(
+                onTap: notesStore.loadAllNotes,
+                child: CircleAvatar(
+                  radius: 12,
+                  backgroundColor: Colors.white,
+                  //backgroundImage: AssetImage("images/user.png"),
+                  child: Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Image.asset("images/user.png"),
+                  ),
                 ),
               ),
               SizedBox(width: 6)
