@@ -43,7 +43,6 @@ class NoteTile extends StatelessWidget {
                   fontSize: 14,
                 ),
               ),
-              //Divider(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
