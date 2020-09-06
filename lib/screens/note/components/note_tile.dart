@@ -12,10 +12,11 @@ class NoteTile extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (c) => NoteScreen(note)));
+            context, MaterialPageRoute(builder: (c) => NoteScreen(note: note)));
       },
       child: Container(
         decoration: BoxDecoration(
+          color: note.color,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: Colors.white,
@@ -42,14 +43,27 @@ class NoteTile extends StatelessWidget {
                   fontSize: 14,
                 ),
               ),
-              Divider(height: 5),
-              Container(
-                alignment: Alignment.center,
-                child: Text(note.dateHour,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 10,
-                    )),
+              //Divider(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 2,
+                      horizontal: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(note.dateHour,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                        )),
+                  )
+                ],
               )
             ],
           ),

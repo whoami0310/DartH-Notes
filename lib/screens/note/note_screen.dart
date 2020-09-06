@@ -9,20 +9,17 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 class NoteScreen extends StatelessWidget {
   final NoteStore note;
 
-  NoteScreen(this.note) {
-    print(note.id);
-    print(note.color.toString());
-  }
+  NoteScreen({note}) : this.note = note != null ? note : NoteStore();
 
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
       return Scaffold(
-        backgroundColor: note.color,
+        backgroundColor: note.color ?? Colors.black,
         appBar: AppBar(
           elevation: 0,
           title: Text(
-            note.dateHour,
+            note.dateHour ?? "",
             style: TextStyle(
               fontSize: 12,
             ),
@@ -35,7 +32,7 @@ class NoteScreen extends StatelessWidget {
             ),
             SizedBox(width: 16),
             CustomIconButton(
-                iconData: note != null ? Icons.refresh : Icons.save,
+                iconData: note.id != null ? Icons.refresh : Icons.save,
                 onTap: note.saveNote),
             SizedBox(width: 12),
           ],
@@ -45,7 +42,7 @@ class NoteScreen extends StatelessWidget {
           children: [
             //Title
             CustomTextField(
-                initialValue: note.title,
+                initialValue: note.title ?? "",
                 textFontSize: 20,
                 hintFontSize: 20,
                 hintText: "Título",
@@ -53,7 +50,7 @@ class NoteScreen extends StatelessWidget {
 
             //Content
             CustomTextField(
-                initialValue: note.textContent,
+                initialValue: note.textContent ?? "",
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 textFontSize: 16,

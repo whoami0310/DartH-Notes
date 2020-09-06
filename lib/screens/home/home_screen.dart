@@ -1,5 +1,6 @@
 import 'package:darthnotes/screens/home/components/custom_widget_app_bar.dart';
 import 'package:darthnotes/screens/note/components/note_tile.dart';
+import 'package:darthnotes/screens/note/note_screen.dart';
 import 'package:darthnotes/stores/notes_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -31,7 +32,10 @@ class HomeScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => NoteScreen()));
+        },
         child: Icon(Icons.add),
       ),
     );

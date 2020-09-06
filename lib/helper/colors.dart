@@ -9,3 +9,10 @@ final customColors = {
   "orange": Colors.orange,
   "black": Colors.black
 };
+
+final reversedCustomColors = {
+  Colors.red: "red",
+  Colors.blue: "blue",
+  Colors.orange: "orange",
+  Colors.black: "black"
+};
