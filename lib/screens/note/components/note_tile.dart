@@ -1,9 +1,9 @@
-import 'package:darthnotes/models/note_model.dart';
 import 'package:darthnotes/screens/note/note_screen.dart';
+import 'package:darthnotes/stores/note_store.dart';
 import 'package:flutter/material.dart';
 
 class NoteTile extends StatelessWidget {
-  final NoteModel note;
+  final NoteStore note;
 
   NoteTile(this.note);
 
@@ -36,7 +36,7 @@ class NoteTile extends StatelessWidget {
                 ),
               ),
               Text(
-                note.textContent ?? note.checkContent ?? "",
+                note.textContent, //?? note.checkContent ?? "",
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 14,

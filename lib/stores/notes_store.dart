@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:darthnotes/models/note_model.dart';
+import 'package:darthnotes/stores/note_store.dart';
 import 'package:mobx/mobx.dart';
 part 'notes_store.g.dart';
 
@@ -37,7 +37,7 @@ abstract class _NotesStoreBase with Store {
         .collection("notes")
         .getDocuments();
     allNotes.addAll(
-        query.documents.map((doc) => NoteModel.fromDocument(doc)).toList());
+        query.documents.map((doc) => NoteStore.fromDocument(doc)).toList());
 
     search("");
   }

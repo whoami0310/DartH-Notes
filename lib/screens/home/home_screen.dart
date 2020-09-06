@@ -12,8 +12,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-            200), //TODO <== Add superior value and set column in main axis to get min space
+        preferredSize: Size.fromHeight(200),
         child: CustomWidgetAppBar(),
       ),
       body: Observer(
