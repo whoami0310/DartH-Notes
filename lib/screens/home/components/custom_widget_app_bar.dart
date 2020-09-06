@@ -1,7 +1,7 @@
 import 'package:darthnotes/common/custom_icon_button.dart';
 import 'package:darthnotes/helper/colors.dart';
 import 'package:darthnotes/stores/notes_store.dart';
-import 'package:darthnotes/widgets/custom_text_field.dart';
+import 'package:darthnotes/common/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +37,7 @@ class CustomWidgetAppBar extends StatelessWidget {
               ),
               CustomIconButton(
                 iconData: Icons.list,
-                onTap: () {},
+                onTap: notesStore.loadAllNotes,
               ),
               SizedBox(width: 12),
               CircleAvatar(

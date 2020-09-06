@@ -1,7 +1,7 @@
 import 'package:darthnotes/common/custom_icon_button.dart';
 import 'package:darthnotes/helper/colors.dart';
 import 'package:darthnotes/stores/note_store.dart';
-import 'package:darthnotes/widgets/custom_text_field.dart';
+import 'package:darthnotes/common/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -15,8 +15,9 @@ class NoteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
       return Scaffold(
-        backgroundColor: note.color ?? Color(0xFF141414),
+        backgroundColor: customColors[note.color],
         appBar: AppBar(
+          backgroundColor: customColors[note.color],
           elevation: 0,
           title: Text(
             note.dateHour ?? "",
@@ -33,7 +34,16 @@ class NoteScreen extends StatelessWidget {
             SizedBox(width: 16),
             CustomIconButton(
                 iconData: note.id != null ? Icons.refresh : Icons.save,
-                onTap: note.saveNote),
+                onTap: () {
+                  if (note.id != null)
+                    note.updateNote();
+                  else
+                    note.saveNote(
+                      onSuccess: () {
+                        Navigator.of(context).pop();
+                      },
+                    );
+                }),
             SizedBox(width: 12),
           ],
         ),
@@ -67,7 +77,9 @@ class NoteScreen extends StatelessWidget {
           //backgroundColor: Colors.white,
           overlayOpacity: 0.4,
           overlayColor: Colors.black,
-          children: customColors.entries
+          children: customColors
+              .asMap()
+              .entries
               .map((v) => SpeedDialChild(
                   child: Container(
                     margin: EdgeInsets.all(1),
@@ -80,7 +92,7 @@ class NoteScreen extends StatelessWidget {
                   //label: v.key,
                   labelStyle: TextStyle(fontSize: 14),
                   onTap: () {
-                    note.setColor(v.value);
+                    note.setColor(v.key);
                   }))
               .toList(),
         ),

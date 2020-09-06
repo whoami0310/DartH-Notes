@@ -1,3 +1,4 @@
+import 'package:darthnotes/helper/colors.dart';
 import 'package:darthnotes/screens/note/note_screen.dart';
 import 'package:darthnotes/stores/note_store.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,9 @@ import 'package:flutter/material.dart';
 class NoteTile extends StatelessWidget {
   final NoteStore note;
 
-  NoteTile(this.note);
+  NoteTile(this.note) {
+    print(note);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +19,7 @@ class NoteTile extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: note.color,
+          color: customColors[note.color],
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: Colors.white,
@@ -43,26 +46,30 @@ class NoteTile extends StatelessWidget {
                   fontSize: 14,
                 ),
               ),
+              SizedBox(height: 6),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 4),
-                    padding: EdgeInsets.symmetric(
-                      vertical: 4,
-                      horizontal: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(note.dateHour,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 10,
-                        )),
-                  )
+                  // Container(
+                  //   margin: EdgeInsets.only(top: 4),
+                  //   padding: EdgeInsets.symmetric(
+                  //     vertical: 4,
+                  //     horizontal: 4,
+                  //   ),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.circular(5),
+                  //   ),
+                  //   alignment: Alignment.center,
+                  //   child:
+
+                  Text(note.dateHour,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                      )),
+
+                  //)
                 ],
               )
             ],

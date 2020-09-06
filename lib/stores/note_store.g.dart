@@ -27,13 +27,13 @@ mixin _$NoteStore on _NoteStoreBase, Store {
   final _$colorAtom = Atom(name: '_NoteStoreBase.color');
 
   @override
-  Color get color {
+  int get color {
     _$colorAtom.reportRead();
     return super.color;
   }
 
   @override
-  set color(Color value) {
+  set color(int value) {
     _$colorAtom.reportWrite(value, super.color, () {
       super.color = value;
     });
@@ -72,13 +72,13 @@ mixin _$NoteStore on _NoteStoreBase, Store {
   final _$typeAtom = Atom(name: '_NoteStoreBase.type');
 
   @override
-  noteTypes get type {
+  int get type {
     _$typeAtom.reportRead();
     return super.type;
   }
 
   @override
-  set type(noteTypes value) {
+  set type(int value) {
     _$typeAtom.reportWrite(value, super.type, () {
       super.type = value;
     });
@@ -88,7 +88,7 @@ mixin _$NoteStore on _NoteStoreBase, Store {
       ActionController(name: '_NoteStoreBase');
 
   @override
-  void setColor(Color color) {
+  void setColor(int color) {
     final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
         name: '_NoteStoreBase.setColor');
     try {

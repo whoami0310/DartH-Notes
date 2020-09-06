@@ -3,16 +3,12 @@ import 'package:flutter/material.dart';
 final primaryDark = Color(0xFF141414);
 final secondaryDark = Color(0xFF383636);
 
-final customColors = {
-  "red": Colors.red,
-  "blue": Colors.blue,
-  "orange": Colors.orange,
-  "black": Color(0xFF141414)
-};
-
-final reversedCustomColors = {
-  Colors.red: "red",
-  Colors.blue: "blue",
-  Colors.orange: "orange",
-  Colors.black: "black"
-};
+final customColors = [
+  secondaryDark,
+  Color(0xFF731102),
+  Color(0xFF0f0091),
+  Color(0xFFcc8800),
+  Color(0xFF087d00),
+  Color(0xFF6b0059),
+  Color(0xFF006b6b),
+];

@@ -7,7 +7,7 @@ class NotesStore = _NotesStoreBase with _$NotesStore;
 
 abstract class _NotesStoreBase with Store {
   _NotesStoreBase() {
-    _loadAllNotes();
+    loadAllNotes();
   }
 
   final firestore = Firestore.instance;
@@ -30,7 +30,8 @@ abstract class _NotesStoreBase with Store {
     return allNotesFiltered;
   }
 
-  Future<void> _loadAllNotes() async {
+  Future<void> loadAllNotes() async {
+    allNotes.clear();
     QuerySnapshot query = await firestore
         .collection("users")
         .document("Uuu7lTgsw3gnpdII6byd")

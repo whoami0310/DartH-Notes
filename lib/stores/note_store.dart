@@ -1,36 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:darthnotes/helper/colors.dart';
-import 'package:darthnotes/helper/enums.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 part 'note_store.g.dart';
 
 class NoteStore = _NoteStoreBase with _$NoteStore;
 
 abstract class _NoteStoreBase with Store {
-  _NoteStoreBase({this.color = Colors.black});
-
   final firestore = Firestore.instance;
 
   @observable
-  String title;
+  String title = "";
 
   @observable
-  Color color;
+  int color;
 
   @observable
-  String dateHour;
+  String dateHour = "";
 
   @observable
-  String textContent;
+  String textContent = "";
 
   @observable
-  noteTypes type;
+  int type = 0;
 
   String id;
 
   @action
-  void setColor(Color color) => this.color = color;
+  void setColor(int color) => this.color = color;
 
   @action
   void setTitle(text) => title = text;
@@ -38,39 +35,50 @@ abstract class _NoteStoreBase with Store {
   @action
   void setTextContent(text) => textContent = text;
 
-  Future<void> saveNote() async {
-    var updatedate = DateTime.now().toString();
-    dateHour = updatedate;
+  String getCurrentUpdateDateTime() {
+    final dateTime =
+        DateFormat('dd/MM/yyyy-HH:mm').format(DateTime.now()).split("-");
+    return "Atualizado em ${dateTime[0]} às ${dateTime[1]}";
+  }
+
+  Future<void> updateNote() async {
+    dateHour = getCurrentUpdateDateTime();
     await firestore
         .collection("users")
         .document("Uuu7lTgsw3gnpdII6byd")
         .collection("notes")
-        //.document(id).updateData(
-        .add({
-      "type": "TEXT",
-      "title": title,
-      "date_hour": updatedate,
-      "text_content": textContent,
-      "color": reversedCustomColors[color]
-    });
+        .document(id)
+        .updateData(toMap());
   }
+
+  Future<void> saveNote({@required VoidCallback onSuccess}) async {
+    await firestore
+        .collection("users")
+        .document("Uuu7lTgsw3gnpdII6byd")
+        .collection("notes")
+        .add(toMap());
+
+    onSuccess();
+  }
+
+  _NoteStoreBase({this.color = 0});
 
   _NoteStoreBase.fromDocument(DocumentSnapshot doc) {
     id = doc.documentID;
-    type = noteTypes.TEXT; // TODO Fix: Set dynamic
+    type = doc.data["type"];
     title = doc.data["title"];
     dateHour = doc.data["date_hour"];
     textContent = doc.data["text_content"];
-    color = customColors[doc.data["color"]];
+    color = doc.data["color"];
   }
 
   toMap() {
     return {
       "type": type,
       "title": title,
-      "date_hour": dateHour,
+      "date_hour": getCurrentUpdateDateTime(),
       "text_content": textContent,
-      "color": color //TODO fix retur to String
+      "color": color
     };
   }
 }
