@@ -9,7 +9,10 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 class NoteScreen extends StatelessWidget {
   final NoteStore note;
 
-  NoteScreen(this.note);
+  NoteScreen(this.note) {
+    print(note.id);
+    print(note.color.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +21,13 @@ class NoteScreen extends StatelessWidget {
         backgroundColor: note.color,
         appBar: AppBar(
           elevation: 0,
+          title: Text(
+            note.dateHour,
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          ),
+          centerTitle: true,
           actions: [
             CustomIconButton(
               iconData: Icons.delete,
@@ -25,9 +35,8 @@ class NoteScreen extends StatelessWidget {
             ),
             SizedBox(width: 16),
             CustomIconButton(
-              iconData: Icons.save,
-              onTap: () {},
-            ),
+                iconData: note != null ? Icons.refresh : Icons.save,
+                onTap: note.saveNote),
             SizedBox(width: 12),
           ],
         ),
@@ -40,7 +49,7 @@ class NoteScreen extends StatelessWidget {
                 textFontSize: 20,
                 hintFontSize: 20,
                 hintText: "Título",
-                onChanged: (text) {}),
+                onChanged: note.setTitle),
 
             //Content
             CustomTextField(
@@ -49,8 +58,8 @@ class NoteScreen extends StatelessWidget {
                 maxLines: null,
                 textFontSize: 16,
                 hintFontSize: 16,
-                hintText: "Conteúdo da sua nota",
-                onChanged: (text) {}),
+                hintText: "Conteúdo da nota",
+                onChanged: note.setTextContent),
           ],
         ),
         floatingActionButton: SpeedDial(
@@ -64,6 +73,7 @@ class NoteScreen extends StatelessWidget {
           children: customColors.entries
               .map((v) => SpeedDialChild(
                   child: Container(
+                    margin: EdgeInsets.all(1),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: v.value,

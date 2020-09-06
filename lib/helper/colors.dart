@@ -7,5 +7,5 @@ final customColors = {
   "red": Colors.red,
   "blue": Colors.blue,
   "orange": Colors.orange,
-  "black": primaryDark
+  "black": Colors.black
 };
