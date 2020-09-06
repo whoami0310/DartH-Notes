@@ -6,6 +6,7 @@ class NoteModel {
   String title;
   String dateHour;
   String textContent;
+  String color;
   List checkContent;
 
   NoteModel.fromDocument(DocumentSnapshot doc) {
@@ -15,6 +16,7 @@ class NoteModel {
     dateHour = doc.data["date_hour"];
     textContent = doc.data["text_content"];
     checkContent = doc.data["check_content"];
+    color = doc.data["color"];
   }
 
   toMap() {
@@ -23,7 +25,8 @@ class NoteModel {
       "title": title,
       "date_hour": dateHour,
       "text_content": textContent,
-      "check_content": checkContent
+      "check_content": checkContent,
+      "color": color
     };
   }
 }

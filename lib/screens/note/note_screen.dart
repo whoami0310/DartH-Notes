@@ -1,5 +1,7 @@
 import 'package:darthnotes/common/custom_icon_button.dart';
+import 'package:darthnotes/helper/colors.dart';
 import 'package:darthnotes/models/note_model.dart';
+import 'package:darthnotes/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
 class NoteScreen extends StatelessWidget {
@@ -10,6 +12,7 @@ class NoteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: customColors[note.color],
       appBar: AppBar(
         elevation: 0,
         actions: [
@@ -28,37 +31,23 @@ class NoteScreen extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16),
         children: [
-          TextFormField(
-            initialValue: note.title,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-            ),
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: "Título",
-                hintStyle: TextStyle(
-                  color: Colors.white60,
-                  fontSize: 20,
-                )),
-          ),
+          //Title
+          CustomTextField(
+              initialValue: note.title,
+              textFontSize: 20,
+              hintFontSize: 20,
+              hintText: "Título",
+              onChanged: (text) {}),
 
           //Content
-          TextFormField(
+          CustomTextField(
               initialValue: note.textContent,
               keyboardType: TextInputType.multiline,
               maxLines: null,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-              ),
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Título",
-                  hintStyle: TextStyle(
-                    color: Colors.white60,
-                    fontSize: 15,
-                  )))
+              textFontSize: 16,
+              hintFontSize: 16,
+              hintText: "Conteúdo da sua nota",
+              onChanged: (text) {}),
         ],
       ),
     );
