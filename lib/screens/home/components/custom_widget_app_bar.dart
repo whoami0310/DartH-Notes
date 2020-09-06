@@ -1,6 +1,7 @@
 import 'package:darthnotes/common/custom_icon_button.dart';
 import 'package:darthnotes/helper/colors.dart';
 import 'package:darthnotes/stores/notes_store.dart';
+import 'package:darthnotes/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,23 +28,12 @@ class CustomWidgetAppBar extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  // TODO <== Create a custom TextField
-                  onChanged: notesStore.search,
-                  autofocus: false,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      isCollapsed: true,
-                      hintText: "Pesquisar suas notas",
-                      hintStyle: TextStyle(
-                        color: Colors.white60,
-                        fontSize: 18,
-                      )),
-                ),
+                child: CustomTextField(
+                    iscollapsed: true,
+                    textFontSize: 18,
+                    hintFontSize: 18,
+                    hintText: "Pesquisar suas notas",
+                    onChanged: notesStore.search),
               ),
               CustomIconButton(
                 iconData: Icons.list,
@@ -53,8 +43,7 @@ class CustomWidgetAppBar extends StatelessWidget {
               CircleAvatar(
                 radius: 12,
                 backgroundColor: Colors.white,
-                backgroundImage:
-                    AssetImage("images/user.png"), //TODO <== Change this image
+                backgroundImage: AssetImage("images/user.png"),
               ),
               SizedBox(width: 6)
             ],
