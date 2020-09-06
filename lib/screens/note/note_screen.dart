@@ -15,7 +15,7 @@ class NoteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
       return Scaffold(
-        backgroundColor: note.color ?? Colors.black,
+        backgroundColor: note.color ?? Color(0xFF141414),
         appBar: AppBar(
           elevation: 0,
           title: Text(

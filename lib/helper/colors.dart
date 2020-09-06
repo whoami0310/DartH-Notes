@@ -7,7 +7,7 @@ final customColors = {
   "red": Colors.red,
   "blue": Colors.blue,
   "orange": Colors.orange,
-  "black": Colors.black
+  "black": Color(0xFF141414)
 };
 
 final reversedCustomColors = {

@@ -47,8 +47,9 @@ class NoteTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
+                    margin: EdgeInsets.only(top: 4),
                     padding: EdgeInsets.symmetric(
-                      vertical: 2,
+                      vertical: 4,
                       horizontal: 4,
                     ),
                     decoration: BoxDecoration(
