@@ -10,6 +10,7 @@ class CustomWidgetAppBar extends StatelessWidget {
     final notesStore = Provider.of<NotesStore>(context);
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(height: 36),
         Image.asset(
@@ -27,6 +28,7 @@ class CustomWidgetAppBar extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
+                  // TODO <== Create a custom TextField
                   onChanged: notesStore.search,
                   autofocus: false,
                   style: TextStyle(
@@ -35,6 +37,7 @@ class CustomWidgetAppBar extends StatelessWidget {
                   ),
                   decoration: InputDecoration(
                       border: InputBorder.none,
+                      isCollapsed: true,
                       hintText: "Pesquisar suas notas",
                       hintStyle: TextStyle(
                         color: Colors.white60,
@@ -50,7 +53,8 @@ class CustomWidgetAppBar extends StatelessWidget {
               CircleAvatar(
                 radius: 12,
                 backgroundColor: Colors.white,
-                backgroundImage: AssetImage("images/user.png"),
+                backgroundImage:
+                    AssetImage("images/user.png"), //TODO <== Change this image
               ),
               SizedBox(width: 6)
             ],

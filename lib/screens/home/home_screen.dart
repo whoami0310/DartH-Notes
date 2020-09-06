@@ -12,14 +12,14 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(135),
+        preferredSize: Size.fromHeight(
+            200), //TODO <== Add superior value and set column in main axis to get min space
         child: CustomWidgetAppBar(),
       ),
       body: Observer(
         builder: (context) {
           var lista = notesStore.allNotesFiltered;
           return ListView.separated(
-            shrinkWrap: true,
             separatorBuilder: (context, index) {
               return Divider(height: 10);
             },
