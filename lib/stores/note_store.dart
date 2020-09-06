@@ -26,6 +26,8 @@ abstract class _NoteStoreBase with Store {
 
   String id;
 
+  bool isDeleted = false;
+
   @action
   void setColor(int color) => this.color = color;
 
@@ -42,7 +44,6 @@ abstract class _NoteStoreBase with Store {
   }
 
   Future<void> updateNote() async {
-    dateHour = getCurrentUpdateDateTime();
     await firestore
         .collection("users")
         .document("Uuu7lTgsw3gnpdII6byd")
@@ -57,6 +58,19 @@ abstract class _NoteStoreBase with Store {
         .document("Uuu7lTgsw3gnpdII6byd")
         .collection("notes")
         .add(toMap());
+
+    onSuccess();
+  }
+
+  Future<void> deleteNote({@required VoidCallback onSuccess}) async {
+    await firestore
+        .collection("users")
+        .document("Uuu7lTgsw3gnpdII6byd")
+        .collection("notes")
+        .document(id)
+        .delete();
+
+    isDeleted = true;
 
     onSuccess();
   }

@@ -19,10 +19,10 @@ class NoteTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: customColors[note.color],
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Colors.white,
-            width: 1,
-          ),
+          // border: Border.all(
+          //   color: Colors.white,
+          //   width: 1,
+          // ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(12),

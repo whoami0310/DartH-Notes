@@ -31,6 +31,7 @@ class CustomWidgetAppBar extends StatelessWidget {
               Expanded(
                 child: CustomTextField(
                     iscollapsed: true,
+                    autofocus: false,
                     textFontSize: 18,
                     hintFontSize: 18,
                     hintText: "Pesquisar suas notas",

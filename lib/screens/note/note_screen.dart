@@ -13,7 +13,22 @@ class NoteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(builder: (_) {
+    return WillPopScope(onWillPop: () async {
+      if (note.isDeleted) {
+        return true;
+      }
+
+      if (note.id != null) {
+        await note.updateNote();
+      } else {
+        note.saveNote(
+          onSuccess: () {
+            Navigator.of(context).pop();
+          },
+        );
+      }
+      return true;
+    }, child: Observer(builder: (_) {
       return Scaffold(
         backgroundColor: customColors[note.color],
         appBar: AppBar(
@@ -27,23 +42,31 @@ class NoteScreen extends StatelessWidget {
           ),
           centerTitle: true,
           actions: [
-            CustomIconButton(
-              iconData: Icons.delete,
-              onTap: () {},
-            ),
-            SizedBox(width: 16),
-            CustomIconButton(
-                iconData: note.id != null ? Icons.refresh : Icons.save,
-                onTap: () {
-                  if (note.id != null)
-                    note.updateNote();
-                  else
-                    note.saveNote(
-                      onSuccess: () {
-                        Navigator.of(context).pop();
-                      },
-                    );
-                }),
+            note.id != null
+                ? CustomIconButton(
+                    iconData: Icons.delete,
+                    onTap: () {
+                      note.deleteNote(
+                        onSuccess: () {
+                          Navigator.of(context).pop();
+                        },
+                      );
+                    },
+                  )
+                : Container(),
+            // SizedBox(width: 16),
+            // CustomIconButton(
+            //     iconData: note.id != null ? Icons.refresh : Icons.save,
+            //     onTap: () {
+            //       if (note.id != null)
+            //         note.updateNote();
+            //       else
+            //         note.saveNote(
+            //           onSuccess: () {
+            //             Navigator.of(context).pop();
+            //           },
+            //         );
+            //     }),
             SizedBox(width: 12),
           ],
         ),
@@ -74,7 +97,6 @@ class NoteScreen extends StatelessWidget {
             Icons.blur_on,
             color: Colors.white,
           ),
-          //backgroundColor: Colors.white,
           overlayOpacity: 0.4,
           overlayColor: Colors.black,
           children: customColors
@@ -89,7 +111,6 @@ class NoteScreen extends StatelessWidget {
                     ),
                   ),
                   backgroundColor: Colors.white,
-                  //label: v.key,
                   labelStyle: TextStyle(fontSize: 14),
                   onTap: () {
                     note.setColor(v.key);
@@ -97,6 +118,6 @@ class NoteScreen extends StatelessWidget {
               .toList(),
         ),
       );
-    });
+    }));
   }
 }
