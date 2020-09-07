@@ -4,7 +4,7 @@ import 'package:darthnotes/stores/note_store.dart';
 import 'package:darthnotes/common/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class NoteScreen extends StatelessWidget {
   final NoteStore note;
@@ -19,13 +19,15 @@ class NoteScreen extends StatelessWidget {
       }
 
       if (note.id != null) {
-        await note.updateNote();
+        await note.update(onFail: () {
+          //TODO add snackbar
+        });
       } else {
-        note.saveNote(
-          onSuccess: () {
-            Navigator.of(context).pop();
-          },
-        );
+        note.save(onSuccess: () {
+          Navigator.of(context).pop();
+        }, onFail: () {
+          //TODO add snackbar
+        });
       }
       return true;
     }, child: Observer(builder: (_) {
@@ -46,76 +48,107 @@ class NoteScreen extends StatelessWidget {
                 ? CustomIconButton(
                     iconData: Icons.delete,
                     onTap: () {
-                      note.deleteNote(
-                        onSuccess: () {
-                          Navigator.of(context).pop();
-                        },
-                      );
+                      note.delete(onSuccess: () {
+                        Navigator.of(context).pop();
+                      }, onFail: () {
+                        // TODO add Snackbar
+                      });
                     },
                   )
                 : Container(),
-            // SizedBox(width: 16),
-            // CustomIconButton(
-            //     iconData: note.id != null ? Icons.refresh : Icons.save,
-            //     onTap: () {
-            //       if (note.id != null)
-            //         note.updateNote();
-            //       else
-            //         note.saveNote(
-            //           onSuccess: () {
-            //             Navigator.of(context).pop();
-            //           },
-            //         );
-            //     }),
             SizedBox(width: 12),
           ],
         ),
-        body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          children: [
-            //Title
-            CustomTextField(
-                initialValue: note.title ?? "",
-                textFontSize: 20,
-                hintFontSize: 20,
-                hintText: "Título",
-                onChanged: note.setTitle),
+        body: SlidingUpPanel(
+          body: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            children: [
+              //Title
+              CustomTextField(
+                  initialValue: note.title ?? "",
+                  textFontSize: 20,
+                  hintFontSize: 20,
+                  hintText: "Título",
+                  onChanged: note.setTitle),
 
-            //Content
-            CustomTextField(
-                initialValue: note.textContent ?? "",
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                textFontSize: 16,
-                hintFontSize: 16,
-                hintText: "Conteúdo da nota",
-                onChanged: note.setTextContent),
-          ],
-        ),
-        floatingActionButton: SpeedDial(
-          child: Icon(
-            Icons.blur_on,
-            color: Colors.white,
+              //Content
+              CustomTextField(
+                  initialValue: note.textContent ?? "",
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  textFontSize: 16,
+                  hintFontSize: 16,
+                  hintText: "Conteúdo da nota",
+                  onChanged: note.setTextContent),
+            ],
           ),
-          overlayOpacity: 0.4,
-          overlayColor: Colors.black,
-          children: customColors
-              .asMap()
-              .entries
-              .map((v) => SpeedDialChild(
-                  child: Container(
-                    margin: EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: v.value,
-                    ),
+          maxHeight: 150,
+          minHeight: 50,
+          panel: Container(
+            color: Colors.black87,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Container(
+                  color: secondaryDark,
+                  height: 50,
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        "Opções ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_drop_up,
+                        size: 15,
+                        color: Colors.white,
+                      )
+                    ],
                   ),
-                  backgroundColor: Colors.white,
-                  labelStyle: TextStyle(fontSize: 14),
-                  onTap: () {
-                    note.setColor(v.key);
-                  }))
-              .toList(),
+                ),
+                Container(
+                  height: 45,
+                  margin: EdgeInsets.only(top: 8),
+                  child: ListView.separated(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    scrollDirection: Axis.horizontal,
+                    separatorBuilder: (c, i) {
+                      return SizedBox(width: 4);
+                    },
+                    itemCount: customColors.length,
+                    itemBuilder: (c, i) {
+                      return GestureDetector(
+                        onTap: () {
+                          note.setColor(i);
+                        },
+                        child: Container(
+                          height: 45,
+                          width: 45,
+                          child: i == note.color
+                              ? Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                )
+                              : SizedBox.shrink(),
+                          margin: EdgeInsets.all(1),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: customColors[i],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       );
     }));

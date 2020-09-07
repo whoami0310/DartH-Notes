@@ -51,7 +51,7 @@ class CustomWidgetAppBar extends StatelessWidget {
               GestureDetector(
                 onTap: notesStore.loadAllNotes,
                 child: CircleAvatar(
-                  radius: 12,
+                  radius: 14,
                   backgroundColor: Colors.white,
                   //backgroundImage: AssetImage("images/user.png"),
                   child: Padding(

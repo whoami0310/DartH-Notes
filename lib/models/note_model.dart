@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+//TODO Remove this class
 class NoteModel {
   String id;
   String type;

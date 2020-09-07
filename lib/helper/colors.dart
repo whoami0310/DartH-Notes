@@ -11,4 +11,8 @@ final customColors = [
   Color(0xFF087d00),
   Color(0xFF6b0059),
   Color(0xFF006b6b),
+  Color(0xFF6d02b5),
+  Color(0xFF1f4200),
+  Color(0xFF7d3000),
+  Color(0xFF258ca1),
 ];

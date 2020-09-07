@@ -9,7 +9,7 @@ class NoteStore = _NoteStoreBase with _$NoteStore;
 abstract class _NoteStoreBase with Store {
   final firestore = Firestore.instance;
 
-  @observable
+  @observable //Not needed for now
   String title = "";
 
   @observable
@@ -18,10 +18,10 @@ abstract class _NoteStoreBase with Store {
   @observable
   String dateHour = "";
 
-  @observable
+  @observable //Not needed for now
   String textContent = "";
 
-  @observable
+  @observable //Not needed for now
   int type = 0;
 
   String id;
@@ -43,36 +43,52 @@ abstract class _NoteStoreBase with Store {
     return "Atualizado em ${dateTime[0]} às ${dateTime[1]}";
   }
 
-  Future<void> updateNote() async {
-    await firestore
+  Future<void> update({
+    @required VoidCallback onFail,
+  }) async {
+    firestore
+        .collection("users")
+        .document("Uuu7lTgsw3gnpdII6byd") //Change this
+        .collection("notes")
+        .document(id)
+        .updateData(toMap())
+        .catchError((e) {
+      onFail();
+    });
+  }
+
+  Future<void> save({
+    @required VoidCallback onSuccess,
+    @required VoidCallback onFail,
+  }) async {
+    firestore
+        .collection("users")
+        .document("Uuu7lTgsw3gnpdII6byd") //Change this
+        .collection("notes")
+        .add(toMap())
+        .then((d) {
+      onSuccess();
+    }).catchError((e) {
+      onFail();
+    });
+  }
+
+  Future<void> delete({
+    @required VoidCallback onSuccess,
+    @required VoidCallback onFail,
+  }) async {
+    firestore
         .collection("users")
         .document("Uuu7lTgsw3gnpdII6byd")
         .collection("notes")
         .document(id)
-        .updateData(toMap());
-  }
-
-  Future<void> saveNote({@required VoidCallback onSuccess}) async {
-    await firestore
-        .collection("users")
-        .document("Uuu7lTgsw3gnpdII6byd")
-        .collection("notes")
-        .add(toMap());
-
-    onSuccess();
-  }
-
-  Future<void> deleteNote({@required VoidCallback onSuccess}) async {
-    await firestore
-        .collection("users")
-        .document("Uuu7lTgsw3gnpdII6byd")
-        .collection("notes")
-        .document(id)
-        .delete();
-
-    isDeleted = true;
-
-    onSuccess();
+        .delete()
+        .then((value) {
+      onSuccess();
+      isDeleted = true;
+    }).catchError((e) {
+      onFail();
+    });
   }
 
   _NoteStoreBase({this.color = 0});
