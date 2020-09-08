@@ -7,22 +7,25 @@ part 'note_store.g.dart';
 class NoteStore = _NoteStoreBase with _$NoteStore;
 
 abstract class _NoteStoreBase with Store {
+
+  //Short instance
   final firestore = Firestore.instance;
 
+  // I aim to introduce a progress indicator to show how far is to complete the note
   @observable //Not needed for now
   String title = "";
-
-  @observable
-  int color;
-
-  @observable
-  String dateHour = "";
 
   @observable //Not needed for now
   String textContent = "";
 
   @observable //Not needed for now
   int type = 0;
+
+  @observable
+  int color;
+
+  @observable
+  String dateHour;
 
   String id;
 
@@ -37,61 +40,17 @@ abstract class _NoteStoreBase with Store {
   @action
   void setTextContent(text) => textContent = text;
 
+  //Constructor
+  _NoteStoreBase({this.color = 0}) {
+    dateHour = getCurrentUpdateDateTime();
+  }
+
+
   String getCurrentUpdateDateTime() {
     final dateTime =
-        DateFormat('dd/MM/yyyy-HH:mm').format(DateTime.now()).split("-");
+    DateFormat('dd/MM/yyyy-HH:mm').format(DateTime.now()).split("-");
     return "Atualizado em ${dateTime[0]} às ${dateTime[1]}";
   }
-
-  Future<void> update({
-    @required VoidCallback onFail,
-  }) async {
-    firestore
-        .collection("users")
-        .document("Uuu7lTgsw3gnpdII6byd") //Change this
-        .collection("notes")
-        .document(id)
-        .updateData(toMap())
-        .catchError((e) {
-      onFail();
-    });
-  }
-
-  Future<void> save({
-    @required VoidCallback onSuccess,
-    @required VoidCallback onFail,
-  }) async {
-    firestore
-        .collection("users")
-        .document("Uuu7lTgsw3gnpdII6byd") //Change this
-        .collection("notes")
-        .add(toMap())
-        .then((d) {
-      onSuccess();
-    }).catchError((e) {
-      onFail();
-    });
-  }
-
-  Future<void> delete({
-    @required VoidCallback onSuccess,
-    @required VoidCallback onFail,
-  }) async {
-    firestore
-        .collection("users")
-        .document("Uuu7lTgsw3gnpdII6byd")
-        .collection("notes")
-        .document(id)
-        .delete()
-        .then((value) {
-      onSuccess();
-      isDeleted = true;
-    }).catchError((e) {
-      onFail();
-    });
-  }
-
-  _NoteStoreBase({this.color = 0});
 
   _NoteStoreBase.fromDocument(DocumentSnapshot doc) {
     id = doc.documentID;
@@ -106,7 +65,7 @@ abstract class _NoteStoreBase with Store {
     return {
       "type": type,
       "title": title,
-      "date_hour": getCurrentUpdateDateTime(),
+      "date_hour": dateHour,
       "text_content": textContent,
       "color": color
     };

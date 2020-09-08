@@ -2,8 +2,10 @@ import 'package:darthnotes/common/custom_icon_button.dart';
 import 'package:darthnotes/helper/colors.dart';
 import 'package:darthnotes/stores/note_store.dart';
 import 'package:darthnotes/common/custom_text_field.dart';
+import 'package:darthnotes/stores/notes_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class NoteScreen extends StatelessWidget {
@@ -13,21 +15,16 @@ class NoteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(onWillPop: () async {
-      if (note.isDeleted) {
-        return true;
-      }
+    final notesStore = Provider.of<NotesStore>(context);
+
+    return WillPopScope(
+      onWillPop: () {
+      if (note.isDeleted) return true;
 
       if (note.id != null) {
-        await note.update(onFail: () {
-          //TODO add snackbar
-        });
+        notesStore.update(note);
       } else {
-        note.save(onSuccess: () {
-          Navigator.of(context).pop();
-        }, onFail: () {
-          //TODO add snackbar
-        });
+        notesStore.save(note);
       }
       return true;
     }, child: Observer(builder: (_) {
@@ -37,7 +34,7 @@ class NoteScreen extends StatelessWidget {
           backgroundColor: customColors[note.color],
           elevation: 0,
           title: Text(
-            note.dateHour ?? "",
+            note.dateHour ?? "", // Review this ?? ""
             style: TextStyle(
               fontSize: 12,
             ),
@@ -48,14 +45,12 @@ class NoteScreen extends StatelessWidget {
                 ? CustomIconButton(
                     iconData: Icons.delete,
                     onTap: () {
-                      note.delete(onSuccess: () {
-                        Navigator.of(context).pop();
-                      }, onFail: () {
-                        // TODO add Snackbar
-                      });
+                      notesStore.delete(note);
+                      note.isDeleted = true;
+                      Navigator.of(context).pop();
                     },
                   )
-                : Container(),
+                : SizedBox.shrink(), // Changed to shrink
             SizedBox(width: 12),
           ],
         ),
@@ -87,15 +82,12 @@ class NoteScreen extends StatelessWidget {
           panel: Container(
             color: Colors.black87,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
+              children: [
                 Container(
                   color: secondaryDark,
                   height: 50,
-                  alignment: Alignment.center,
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
+                    children: [
                       Text(
                         "Opções ",
                         style: TextStyle(
@@ -118,11 +110,11 @@ class NoteScreen extends StatelessWidget {
                   child: ListView.separated(
                     padding: EdgeInsets.symmetric(horizontal: 5),
                     scrollDirection: Axis.horizontal,
-                    separatorBuilder: (c, i) {
+                    separatorBuilder: (_, i) {
                       return SizedBox(width: 4);
                     },
                     itemCount: customColors.length,
-                    itemBuilder: (c, i) {
+                    itemBuilder: (_, i) {
                       return GestureDetector(
                         onTap: () {
                           note.setColor(i);
@@ -136,7 +128,7 @@ class NoteScreen extends StatelessWidget {
                                   color: Colors.white,
                                 )
                               : SizedBox.shrink(),
-                          margin: EdgeInsets.all(1),
+                          //margin: EdgeInsets.all(1),  remove this
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: customColors[i],
